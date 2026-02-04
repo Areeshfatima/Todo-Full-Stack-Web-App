@@ -1,8 +1,0 @@
-{
-  "version": 2,
-  "framework": "nextjs",
-  "root": "./frontend",
-  "env": {
-    "NEXT_PUBLIC_API_BASE_URL": "https://your-backend-url.vercel.app"
-  }
-}
