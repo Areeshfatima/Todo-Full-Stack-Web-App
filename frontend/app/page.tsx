@@ -282,6 +282,14 @@ export default function DashboardPage() {
     );
   }
 
+  if (!isAuthenticated) {
+    // Redirect to login if not authenticated
+    if (typeof window !== 'undefined') {
+      window.location.href = '/login';
+    }
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-white p-4">
       <Header />
@@ -329,3 +337,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+// Temporary comment to trigger Vercel deployment.
