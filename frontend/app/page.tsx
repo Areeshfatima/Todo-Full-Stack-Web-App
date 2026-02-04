@@ -31,23 +31,6 @@ export default function DashboardPage() {
   useEffect(() => {
     if (isAuthenticated) {
       const fetchTasks = async () => {
-        // Check if user is authenticated by verifying token exists
-        const token = typeof window !== 'undefined' ? localStorage.getItem('better-auth-token') : null;
-        if (!token) {
-          showToast({
-            id: Date.now().toString(),
-            message: 'Authentication required. Please log in first.',
-            type: 'error',
-            duration: 5000
-          });
-          // Redirect to login page
-          if (typeof window !== 'undefined') {
-            window.location.href = '/login';
-          }
-          setLoading(false);
-          return;
-        }
-
         try {
           const response = await taskApi.getAll();
           setTasks(response.tasks || []);
@@ -66,6 +49,8 @@ export default function DashboardPage() {
       };
 
       fetchTasks();
+    } else {
+      setLoading(false);
     }
   }, [isAuthenticated]);
 
@@ -89,22 +74,6 @@ export default function DashboardPage() {
   }
 
   const handleCreateTask = async (taskData: Omit<Task, 'id' | 'userId' | 'createdAt' | 'updatedAt'>) => {
-    // Check if user is authenticated by verifying token exists
-    const token = typeof window !== 'undefined' ? localStorage.getItem('better-auth-token') : null;
-    if (!token) {
-      showToast({
-        id: Date.now().toString(),
-        message: 'Authentication required. Please log in first.',
-        type: 'error',
-        duration: 5000
-      });
-      // Redirect to login page
-      if (typeof window !== 'undefined') {
-        window.location.href = '/login';
-      }
-      return;
-    }
-
     try {
       const response = await taskApi.create(taskData);
       setTasks(prev => [...prev, response.task]);
@@ -128,22 +97,6 @@ export default function DashboardPage() {
   };
 
   const handleUpdateTask = async (taskData: Partial<Task>) => {
-    // Check if user is authenticated by verifying token exists
-    const token = typeof window !== 'undefined' ? localStorage.getItem('better-auth-token') : null;
-    if (!token) {
-      showToast({
-        id: Date.now().toString(),
-        message: 'Authentication required. Please log in first.',
-        type: 'error',
-        duration: 5000
-      });
-      // Redirect to login page
-      if (typeof window !== 'undefined') {
-        window.location.href = '/login';
-      }
-      return;
-    }
-
     if (!editingTask) return;
 
     try {
@@ -170,23 +123,7 @@ export default function DashboardPage() {
   };
 
   const handleDeleteTask = async (id: number | string) => {
-    // Check if user is authenticated by verifying token exists
-    const token = typeof window !== 'undefined' ? localStorage.getItem('better-auth-token') : null;
-    if (!token) {
-      showToast({
-        id: Date.now().toString(),
-        message: 'Authentication required. Please log in first.',
-        type: 'error',
-        duration: 5000
-      });
-      // Redirect to login page
-      if (typeof window !== 'undefined') {
-        window.location.href = '/login';
-      }
-      return;
-    }
-
-    if (window.confirm('Are you sure you want to delete this task?')) {
+    if (typeof window !== 'undefined' && window.confirm('Are you sure you want to delete this task?')) {
       try {
         await taskApi.delete(id.toString());
         setTasks(prev => prev.filter(task => task.id !== id));
@@ -210,22 +147,6 @@ export default function DashboardPage() {
   };
 
   const handleToggleComplete = async (id: number | string, completed: boolean) => {
-    // Check if user is authenticated by verifying token exists
-    const token = typeof window !== 'undefined' ? localStorage.getItem('better-auth-token') : null;
-    if (!token) {
-      showToast({
-        id: Date.now().toString(),
-        message: 'Authentication required. Please log in first.',
-        type: 'error',
-        duration: 5000
-      });
-      // Redirect to login page
-      if (typeof window !== 'undefined') {
-        window.location.href = '/login';
-      }
-      return;
-    }
-
     try {
       // Optimistic update
       setTasks(prev => prev.map(task =>
