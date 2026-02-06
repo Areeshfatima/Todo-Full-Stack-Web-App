@@ -5,14 +5,14 @@ import { Trash2, Edit3 } from 'lucide-react';
 interface TaskCardProps {
   task: Task;
   onEdit?: (task: Task) => void;
-  onDelete?: (id: string) => void;
-  onComplete?: (id: string, completed: boolean) => void;
+  onDelete?: (id: number | string) => void;
+  onComplete?: (id: number | string, completed: boolean) => void;
 }
 
 export const TaskCard = ({ task, onEdit, onDelete, onComplete }: TaskCardProps) => {
   const handleCompleteChange = () => {
     if (onComplete) {
-      onComplete(task.id, !task.completed);
+      onComplete(task.id.toString(), !task.completed);
     }
   };
 
@@ -64,7 +64,7 @@ export const TaskCard = ({ task, onEdit, onDelete, onComplete }: TaskCardProps) 
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => onDelete && onDelete(task.id)}
+            onClick={() => onDelete && onDelete(task.id.toString())}
             aria-label="Delete task"
             className="p-2 text-red-600 hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 rounded"
           >

@@ -122,7 +122,7 @@ export default function SignupPage() {
                 <Input
                   type="text"
                   name="name"
-                  placeholder="Full Name"
+                  label="Full Name"
                   value={formData.name}
                   onChange={handleChange}
                   className={`w-full ${errors.name ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'focus:ring-indigo-500 focus:border-indigo-500'}`}
@@ -134,7 +134,7 @@ export default function SignupPage() {
                 <Input
                   type="email"
                   name="email"
-                  placeholder="Email Address"
+                  label="Email Address"
                   value={formData.email}
                   onChange={handleChange}
                   className={`w-full ${errors.email ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'focus:ring-indigo-500 focus:border-indigo-500'}`}
@@ -146,7 +146,7 @@ export default function SignupPage() {
                 <Input
                   type="password"
                   name="password"
-                  placeholder="Password"
+                  label="Password"
                   value={formData.password}
                   onChange={handleChange}
                   className={`w-full ${errors.password ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'focus:ring-indigo-500 focus:border-indigo-500'}`}
@@ -158,7 +158,7 @@ export default function SignupPage() {
                 <Input
                   type="password"
                   name="confirmPassword"
-                  placeholder="Confirm Password"
+                  label="Confirm Password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   className={`w-full ${errors.confirmPassword ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'focus:ring-indigo-500 focus:border-indigo-500'}`}

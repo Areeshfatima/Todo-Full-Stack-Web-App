@@ -33,7 +33,6 @@ export default function DashboardPage() {
       const token = typeof window !== 'undefined' ? localStorage.getItem('better-auth-token') : null;
       if (!token) {
         showToast({
-          id: Date.now().toString(),
           message: 'Authentication required. Please log in first.',
           type: 'error',
           duration: 5000
@@ -53,7 +52,6 @@ export default function DashboardPage() {
         console.error('Error loading tasks:', error);
         const errorMessage = error.message || 'Failed to load tasks';
         showToast({
-          id: Date.now().toString(),
           message: errorMessage,
           type: 'error',
           duration: 5000
@@ -71,7 +69,6 @@ export default function DashboardPage() {
     const token = typeof window !== 'undefined' ? localStorage.getItem('better-auth-token') : null;
     if (!token) {
       showToast({
-        id: Date.now().toString(),
         message: 'Authentication required. Please log in first.',
         type: 'error',
         duration: 5000
@@ -87,7 +84,6 @@ export default function DashboardPage() {
       const response = await taskApi.create(taskData);
       setTasks(prev => [...prev, response.task]);
       showToast({
-        id: Date.now().toString(),
         message: 'Task created successfully!',
         type: 'success',
         duration: 3000
@@ -97,7 +93,6 @@ export default function DashboardPage() {
       console.error('Error creating task:', error);
       const errorMessage = error.message || 'Failed to create task';
       showToast({
-        id: Date.now().toString(),
         message: errorMessage,
         type: 'error',
         duration: 5000
@@ -110,7 +105,6 @@ export default function DashboardPage() {
     const token = typeof window !== 'undefined' ? localStorage.getItem('better-auth-token') : null;
     if (!token) {
       showToast({
-        id: Date.now().toString(),
         message: 'Authentication required. Please log in first.',
         type: 'error',
         duration: 5000
@@ -125,10 +119,9 @@ export default function DashboardPage() {
     if (!editingTask) return;
 
     try {
-      const response = await taskApi.update(editingTask.id, taskData);
-      setTasks(prev => prev.map(t => t.id === editingTask.id ? response.task : t));
+      const response = await taskApi.update(editingTask.id.toString(), taskData);
+      setTasks(prev => prev.map(t => t.id.toString() === editingTask.id.toString() ? response.task : t));
       showToast({
-        id: Date.now().toString(),
         message: 'Task updated successfully!',
         type: 'success',
         duration: 3000
@@ -139,7 +132,6 @@ export default function DashboardPage() {
       console.error('Error updating task:', error);
       const errorMessage = error.message || 'Failed to update task';
       showToast({
-        id: Date.now().toString(),
         message: errorMessage,
         type: 'error',
         duration: 5000
@@ -147,12 +139,11 @@ export default function DashboardPage() {
     }
   };
 
-  const handleDeleteTask = async (id: string) => {
+  const handleDeleteTask = async (id: string | number) => {
     // Check if user is authenticated by verifying token exists
     const token = typeof window !== 'undefined' ? localStorage.getItem('better-auth-token') : null;
     if (!token) {
       showToast({
-        id: Date.now().toString(),
         message: 'Authentication required. Please log in first.',
         type: 'error',
         duration: 5000
@@ -166,10 +157,9 @@ export default function DashboardPage() {
 
     if (window.confirm('Are you sure you want to delete this task?')) {
       try {
-        await taskApi.delete(id);
-        setTasks(prev => prev.filter(task => task.id !== id));
+        await taskApi.delete(id.toString());
+        setTasks(prev => prev.filter(task => task.id.toString() !== id.toString()));
         showToast({
-          id: Date.now().toString(),
           message: 'Task deleted successfully!',
           type: 'success',
           duration: 3000
@@ -178,7 +168,6 @@ export default function DashboardPage() {
         console.error('Error deleting task:', error);
         const errorMessage = error.message || 'Failed to delete task';
         showToast({
-          id: Date.now().toString(),
           message: errorMessage,
           type: 'error',
           duration: 5000
@@ -187,12 +176,11 @@ export default function DashboardPage() {
     }
   };
 
-  const handleToggleComplete = async (id: string, completed: boolean) => {
+  const handleToggleComplete = async (id: string | number, completed: boolean) => {
     // Check if user is authenticated by verifying token exists
     const token = typeof window !== 'undefined' ? localStorage.getItem('better-auth-token') : null;
     if (!token) {
       showToast({
-        id: Date.now().toString(),
         message: 'Authentication required. Please log in first.',
         type: 'error',
         duration: 5000
@@ -207,17 +195,16 @@ export default function DashboardPage() {
     try {
       // Optimistic update
       setTasks(prev => prev.map(task =>
-        task.id === id ? { ...task, completed, updatedAt: new Date().toISOString() } : task
+        task.id.toString() === id.toString() ? { ...task, completed, updatedAt: new Date().toISOString() } : task
       ));
 
-      const response = await taskApi.toggleComplete(id, completed);
+      const response = await taskApi.toggleComplete(id.toString(), completed);
       // Update with server response to ensure consistency
       setTasks(prev => prev.map(task =>
-        task.id === id ? response.task : task
+        task.id.toString() === id.toString() ? response.task : task
       ));
 
       showToast({
-        id: Date.now().toString(),
         message: completed ? 'Task marked as complete!' : 'Task marked as incomplete!',
         type: 'success',
         duration: 3000
@@ -225,13 +212,12 @@ export default function DashboardPage() {
     } catch (error: any) {
       // If API call fails, revert the optimistic update
       setTasks(prev => prev.map(task =>
-        task.id === id ? { ...task, completed: !completed } : task
+        task.id.toString() === id.toString() ? { ...task, completed: !completed } : task
       ));
 
       console.error('Error updating task status:', error);
       const errorMessage = error.message || 'Failed to update task status';
       showToast({
-        id: Date.now().toString(),
         message: errorMessage,
         type: 'error',
         duration: 5000
@@ -299,7 +285,13 @@ export default function DashboardPage() {
             setShowTaskModal(false);
             setEditingTask(null);
           }}
-          onSave={editingTask ? handleUpdateTask : handleCreateTask}
+          onSave={(taskData) => {
+            if (editingTask) {
+              handleUpdateTask(taskData as Partial<Task>);
+            } else {
+              handleCreateTask(taskData as Omit<Task, 'id' | 'userId' | 'createdAt' | 'updatedAt'>);
+            }
+          }}
           task={editingTask}
         />
       </div>

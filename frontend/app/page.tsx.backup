@@ -38,6 +38,7 @@ export default function DashboardPage() {
           console.error('Error loading tasks:', error);
           const errorMessage = error.message || 'Failed to load tasks';
           showToast({
+            id: Date.now().toString(),
             message: errorMessage,
             type: 'error',
             duration: 5000
@@ -77,6 +78,7 @@ export default function DashboardPage() {
       const response = await taskApi.create(taskData);
       setTasks(prev => [...prev, response.task]);
       showToast({
+        id: Date.now().toString(),
         message: 'Task created successfully!',
         type: 'success',
         duration: 3000
@@ -86,6 +88,7 @@ export default function DashboardPage() {
       console.error('Error creating task:', error);
       const errorMessage = error.message || 'Failed to create task';
       showToast({
+        id: Date.now().toString(),
         message: errorMessage,
         type: 'error',
         duration: 5000
@@ -100,6 +103,7 @@ export default function DashboardPage() {
       const response = await taskApi.update(editingTask.id.toString(), taskData);
       setTasks(prev => prev.map(t => t.id === editingTask.id ? response.task : t));
       showToast({
+        id: Date.now().toString(),
         message: 'Task updated successfully!',
         type: 'success',
         duration: 3000
@@ -110,6 +114,7 @@ export default function DashboardPage() {
       console.error('Error updating task:', error);
       const errorMessage = error.message || 'Failed to update task';
       showToast({
+        id: Date.now().toString(),
         message: errorMessage,
         type: 'error',
         duration: 5000
@@ -123,6 +128,7 @@ export default function DashboardPage() {
         await taskApi.delete(id.toString());
         setTasks(prev => prev.filter(task => task.id !== id));
         showToast({
+          id: Date.now().toString(),
           message: 'Task deleted successfully!',
           type: 'success',
           duration: 3000
@@ -131,6 +137,7 @@ export default function DashboardPage() {
         console.error('Error deleting task:', error);
         const errorMessage = error.message || 'Failed to delete task';
         showToast({
+          id: Date.now().toString(),
           message: errorMessage,
           type: 'error',
           duration: 5000
@@ -153,6 +160,7 @@ export default function DashboardPage() {
       ));
 
       showToast({
+        id: Date.now().toString(),
         message: completed ? 'Task marked as complete!' : 'Task marked as incomplete!',
         type: 'success',
         duration: 3000
@@ -166,7 +174,8 @@ export default function DashboardPage() {
       console.error('Error updating task status:', error);
       const errorMessage = error.message || 'Failed to update task status';
       showToast({
-                message: errorMessage,
+        id: Date.now().toString(),
+        message: errorMessage,
         type: 'error',
         duration: 5000
       });
@@ -243,15 +252,10 @@ export default function DashboardPage() {
           setShowTaskModal(false);
           setEditingTask(null);
         }}
-        onSave={(taskData) => {
-          if (editingTask) {
-            handleUpdateTask(taskData as Partial<Task>);
-          } else {
-            handleCreateTask(taskData as Omit<Task, 'id' | 'userId' | 'createdAt' | 'updatedAt'>);
-          }
-        }}
+        onSave={editingTask ? handleUpdateTask : handleCreateTask}
         task={editingTask}
       />
     </div>
   );
 }
+// Temporary comment to trigger Vercel deployment.

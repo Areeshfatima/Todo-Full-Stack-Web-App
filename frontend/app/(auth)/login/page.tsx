@@ -110,7 +110,7 @@ export default function LoginPage() {
                 <Input
                   type="email"
                   name="email"
-                  placeholder="Email Address"
+                  label="Email Address"
                   value={formData.email}
                   onChange={handleChange}
                   className={`w-full ${errors.email ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'focus:ring-indigo-500 focus:border-indigo-500'}`}
@@ -122,7 +122,7 @@ export default function LoginPage() {
                 <Input
                   type="password"
                   name="password"
-                  placeholder="Password"
+                  label="Password"
                   value={formData.password}
                   onChange={handleChange}
                   className={`w-full ${errors.password ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'focus:ring-indigo-500 focus:border-indigo-500'}`}

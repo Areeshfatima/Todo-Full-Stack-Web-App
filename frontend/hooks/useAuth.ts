@@ -51,7 +51,7 @@ export const useAuth = () => {
     return () => {
       window.removeEventListener('auth-expired', handleAuthExpired);
     };
-  }, [router]);
+  }, [router]); // Dependencies array is fine
 
   const login = async (token: string, userData: any) => {
     authClient.setToken(token);
