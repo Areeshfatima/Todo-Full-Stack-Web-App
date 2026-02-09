@@ -1,5 +1,7 @@
 # Dependencies
-node_modules/
+node_modules
+.next
+.env
 venv/
 env/
 .venv/
