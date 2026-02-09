@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { UserCredentials } from '@/types';
+import { UserCredentials } from '../../../types';
 import { BackButton } from '../../../components/BackButton';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
+import { Input } from '../../../components/ui/input';
+import { Label } from '../../../components/ui/label';
+import { Button } from '../../../components/ui/button';
 import Link from 'next/link';
 import { useAuth } from '../../../hooks/useAuth';
 import { useRouter } from 'next/navigation';

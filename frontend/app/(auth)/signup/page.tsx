@@ -4,9 +4,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { UserCredentials } from '../../../types';
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from '@/components/ui/button';
+import { Label } from "../../../components/ui/label";
+import { Input } from "../../../components/ui/input";
+import { Button } from '../../../components/ui/button';
 import { useAuth } from '../../../hooks/useAuth';
 import { authApi } from '../../../lib/api';
 

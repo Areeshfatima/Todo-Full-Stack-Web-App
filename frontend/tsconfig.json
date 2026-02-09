@@ -23,10 +23,10 @@
         "name": "next"
       }
     ],
-    "baseUrl": "frontend",
+    "baseUrl": ".",
     "paths": {
       "@/*": [
-        "*"
+        "./*"
       ]
     }
   },

@@ -12,7 +12,7 @@ import { taskApi } from '../../lib/api';
 import { useToast, Toast } from '../../hooks/useToast';
 import { TaskFormModal } from '../../components/TaskFormModal';
 import { ToastProvider } from '../../components/ToastProvider';
-import { Button } from '@/components/ui/button';
+import { Button } from '../../components/ui/button';
 
 export default function DashboardPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
