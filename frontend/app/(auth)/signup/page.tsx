@@ -69,7 +69,7 @@ export default function SignupPage() {
       localStorage.setItem('better-auth-token', data.token);
 
       signup(data.token, data.user);
-      router.push('/app');
+      router.push('/');
     } catch (error: any) {
       setErrors({ general: error.message || 'Signup failed. Please try again.' });
     } finally {

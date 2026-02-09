@@ -57,7 +57,7 @@ export default function LoginPage() {
       localStorage.setItem('better-auth-token', data.token);
 
       login(data.token, data.user);
-      router.push('/app');
+      router.push('/');
     } catch (error: any) {
       setErrors({ general: error.message || 'Login failed. Please try again.' });
     } finally {
