@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { useAuth } from '../../../hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { authApi } from '../../../lib/api';
+import { useToast } from '../../../hooks/useToast';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState<Pick<UserCredentials, 'email' | 'password'>>({
@@ -58,8 +59,9 @@ export default function LoginPage() {
 
       login(data.token, data.user);
       router.push('/');
+      useToast().success('Welcome back!');
     } catch (error: any) {
-      setErrors({ general: error.message || 'Login failed. Please try again.' });
+      useToast().error(error.message || 'Login failed. Please try again.');
     } finally {
       setIsLoading(false);
     }

@@ -9,6 +9,7 @@ import { Input } from "../../../components/ui/input";
 import { Button } from '../../../components/ui/button';
 import { useAuth } from '../../../hooks/useAuth';
 import { authApi } from '../../../lib/api';
+import { useToast } from '../../../hooks/useToast';
 
 export default function SignupPage() {
   const [formData, setFormData] = useState<Omit<UserCredentials, 'name'> & { name: string; confirmPassword: string }>({
@@ -70,8 +71,9 @@ export default function SignupPage() {
 
       signup(data.token, data.user);
       router.push('/');
+      useToast().success('Account created successfully!');
     } catch (error: any) {
-      setErrors({ general: error.message || 'Signup failed. Please try again.' });
+      useToast().error(error.message || 'Signup failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
